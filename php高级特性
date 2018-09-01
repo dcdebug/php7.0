@@ -34,3 +34,14 @@ PHP Fatal error:  Cannot redeclare test() (previously declared in /usr/share/ngi
 发现没有错误
 
 命名空间的好处,在require 多个文件，而文件中有重复的函数名称的时候，可以避免函数名字的冲突;
+
+对于函数的引用，可以采用如下：
+
+require "test1.php";
+
+
+require "test2.php";
+
+
+test1\test();
+test2\test();
