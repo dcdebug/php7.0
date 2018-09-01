@@ -6,4 +6,31 @@ PHP 面向对象的高级特性
 
 java 等其他语言都有这个概念
 
+命名空间的案例介绍：
 
+文件1 
+test1.php 
+内容
+<?php 
+function test(){
+}
+test2.php 内容如下：
+<?php 
+function test(){
+}
+
+test.php 文件
+<?php 
+  require 'test1.php'
+  require 'test2.php'
+
+运行php test.php文件，提示如下：
+
+PHP Fatal error:  Cannot redeclare test() (previously declared in /usr/share/nginx/html/darrykinger/public/namespace/test1.php:5) in /usr/share/nginx/html/darrykinger/public/namespace/test2.php on line 5
+
+在test1.php ,test2.php 文件头中分别增加namespace test1; namespace test2; 
+
+再运行php test.php 文件
+发现没有错误
+
+命名空间的好处,在require 多个文件，而文件中有重复的函数名称的时候，可以避免函数名字的冲突;
