@@ -1,0 +1,62 @@
+以前的项目都是通过手工载入，比如通过include,require ，对于它们的区别这里不进行过多的讲解
+
+当PHP项目越来越大，文件越来越多的时候,这种载入就比较麻烦
+
+那么php5.2以后，就引入了自动载入的功能
+
+案例，test1.php ,test2.php
+
+test.php 文件实现自动载入功能
+
+test1.php 
+
+<?php 
+  class test1{
+    static function test(){
+      echo __METHOD__."\r\n";
+     }
+     }
+test2.php
+<?php 
+  class test2{
+     static function test(){
+     echo __METHOD__."\r\n";
+     }
+  }
+  
+ test.php 文件
+ 
+ test1::test();
+ test2::test();
+ 
+ function __autoload($class){
+    require __DIR__."/".$class.".php";
+}
+运行结果如下:
+test1::test
+test2::test
+
+工作原理：
+* 该函数在PHP7.2中已经被废弃了;
+ * 作用，在调用test1类的时候,如果此类不存在，就会自动调用__autoload()函数
+ * 尝试加载test1类
+ * 多次有这个函数会提示重复定义的情况,
+ * 函数spl_autoload_register('autoload1');是官方比较推荐的一种方案
+ * test2也是这样的处理方式
+ 
+ 关于spl_autoload_regitster()用法如下：
+ spl_autoload_register('autoload');
+spl_autoload_register('autoload1');
+test1::test();
+test2::test();
+
+function autoload($class){
+    echo "autoload the class:".$class."\r\n";
+    require __DIR__."/".$class.".php";
+}
+
+function autoload1($class){
+    echo "autoload1 the class:".$class."\r\n";
+    require __DIR__."/".$class.".php";
+}
+避免了重复加载的情况;
